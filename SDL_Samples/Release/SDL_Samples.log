@@ -1,0 +1,8 @@
+﻿  Gaming.cpp
+C:\Users\USER\Desktop\8Player CasualGame\SDL_Samples\Gaming.cpp(92,15): warning C4060: switch문에 'case' 또는 'default' 레이블이 없습니다.
+  main.cpp
+  코드를 생성하고 있습니다.
+  Previous IPDB not found, fall back to full compilation.
+  All 9 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  코드를 생성했습니다.
+  SDL_Samples.vcxproj -> C:\Users\USER\Desktop\8Player CasualGame\Release\SDL_Samples.exe
