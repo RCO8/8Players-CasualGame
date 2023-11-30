@@ -1,2 +1,8 @@
 # 8Players-CasualGame
-8Players Casual Game can using Joystick
+8인용으로 로컬플레이하는 게임
+
+----------------------------
+조작 (키보드 및 조이스틱)
+방향키 : 이동
+Z : 공격
+X : 아이템 사용
