@@ -149,6 +149,7 @@
     <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="Joystick.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="UI.cpp" />
