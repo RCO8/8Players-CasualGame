@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "Player.h"
 
 const int maxJoystickIndex = 8;
 
@@ -16,7 +17,7 @@ private:
 public:
 	Joystick();
 	~Joystick();
-	void CheckJoystickEvent(SDL_Event event);
+	void CheckJoystickEvent(SDL_Event event, Player &getPlayers);
 };
 
 //Console ver

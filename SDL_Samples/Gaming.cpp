@@ -1,7 +1,7 @@
 #include "Gaming.h"
 
-const int windowWidth = 640;
-const int windowHeight = 480;
+const int windowWidth = 720;
+const int windowHeight = 640;
 
 bool Gaming::GameInit()
 {
@@ -23,7 +23,11 @@ bool Gaming::GameInit()
 
     //Resouce Setting
     SDL_Color bgImgColor = { 255,255,255 };
-
+    players[0] = new Player(0, 0);
+    SDL_Color hideSprite = { 0,255,0 };
+    playerSprite[0] = new Sprite(renderer, "Bomberman.png");
+    playerSprite[0]->SetSpriteClip(0, 1, 15, 22);
+    playerSprite[0]->SetColorHide(hideSprite);
     return true;
 }
 
@@ -57,12 +61,20 @@ void Gaming::CheckKeyPress()
             switch (event.key.keysym.scancode)
             {
             case SDL_SCANCODE_UP:       //SDL_Log("Up");
+                if (0 < players[0]->GetPosition(false))
+                    players[0]->CheckMove(0, -2);
                 break;
             case SDL_SCANCODE_DOWN:     //SDL_Log("Down");
+                if(windowHeight - playerSprite[0]->GetClipHeight() > players[0]->GetPosition(false))
+                    players[0]->CheckMove(0, 2);
                 break;
             case SDL_SCANCODE_LEFT:     //SDL_Log("Left");
+                if(0 < players[0]->GetPosition(true))
+                    players[0]->CheckMove(-2, 0);
                 break;
             case SDL_SCANCODE_RIGHT:    //SDL_Log("Right");
+                if(windowWidth - playerSprite[0]->GetClipWidth() > players[0]->GetPosition(true))
+                    players[0]->CheckMove(2, 0);
                 break;
             case SDL_SCANCODE_RETURN:   //SDL_Log("Enter");
                 break;
@@ -89,7 +101,11 @@ void Gaming::CheckKeyPress()
             }
         case SDL_KEYUP:
             switch (event.key.keysym.scancode)  //Same to SDL_KEYDOWN
-            { }
+            {
+            case SDL_SCANCODE_LEFT:     
+            case SDL_SCANCODE_RIGHT:
+                break;
+            }
             break;
 
             //Mouse Check
@@ -129,6 +145,7 @@ void Gaming::CheckKeyPress()
         }
 
         //추가적인 입력 디바이스가 있다면 여기로 메서드 호출
+        playerContoll->CheckJoystickEvent(event, *players[0]);
     }
 }
 void Gaming::UpdateData()
@@ -136,14 +153,15 @@ void Gaming::UpdateData()
     //게임 내 변형된 데이터를 여기에 갱신
     //만약에 이벤트에 적용을 하지 않는다면
     //mTimer.StartCount();
+    SDL_Delay(100);
 }
 void Gaming::DrawScreen()   //Drawing Sprite or UI in this Screen
 {
-    SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 255);
+    SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 255);
     SDL_RenderClear(renderer);  //Screen Clear   //Fill Color in Screen
     
     //Draw Image
-
+    playerSprite[0]->Drawing(players[0]->GetPosition(true), players[0]->GetPosition(false), 0);
     //Draw UI
 
     SDL_RenderPresent(renderer);    //Redraw at Screen

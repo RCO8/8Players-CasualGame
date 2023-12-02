@@ -17,7 +17,7 @@ Joystick::~Joystick()
 	SDL_JoystickClose(myJoystick);
 }
 
-void Joystick::CheckJoystickEvent(SDL_Event event)
+void Joystick::CheckJoystickEvent(SDL_Event event, Player &getPlayers)
 {
 		switch (event.type)
 		{

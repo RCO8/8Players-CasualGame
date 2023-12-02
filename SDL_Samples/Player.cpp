@@ -15,11 +15,10 @@ Player::Player(int getX, int getY) : StartX(getX), StartY(getY)
 	//스프라이트 설정
 }
 
-void Player::PlayerMove(int x, int y)
+void Player::CheckMove(int x, int y)
 {
-	//화면 밖으로 나가지 않거나 벽을 지나가지 못하게 추가
-	this->x += x;
-	this->y += y;
+	this->x += speed * x;
+	this->y += speed * y;
 }
 
 void Player::Damaged(int h)
@@ -31,6 +30,15 @@ void Player::Damaged(int h)
 		health = 20;
 		this->x = StartX;
 		this->y = StartY;
+	}
+	CheckLife();
+}
+
+void Player::CheckLife()
+{
+	if (life == 0)
+	{
+		SDL_Log("Game Over");
 	}
 }
 
