@@ -10,7 +10,8 @@ private:
 	int life, health;	//목숨, 체력
 	int speed, power, item;	//속도, 위력, 아이템 사용량
 	Sprite* general;
-	SDL_Rect* frames;
+	SDL_Rect frames[20];	//프레임 클립
+	int nowFrame = 0;	//현재 프레임
 public:
 	Player(int getX, int getY);
 	~Player();
@@ -19,11 +20,8 @@ public:
 	void Damaged(int h);
 	void PowerUp(int opt);	// {1:speed, 2:power, 3:item}
 	void HasItem();
-
-	int GetPosition(bool p)
-	{	
-		return p ? x : y;	//true = x, false = y
-	}
+	void SetFrame(int f) { nowFrame = f; }
+	int GetPosition(bool p) { return p ? x : y; }	//true = x, false = y
 
 	void DrawPlayer();
 private:

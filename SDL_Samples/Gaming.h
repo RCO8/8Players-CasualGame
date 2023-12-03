@@ -16,8 +16,9 @@ private:
     SDL_Event event;    //입력 이벤트
 
     Joystick* playerContoll;
-    Sprite* playerSprite[8];
     Player* players[8]; //플레이어
+    int inputHorizon = 0;
+    int inputVertical = 0;
 public:
     bool GameInit();    //게임 시작시 기본사항 정의
     void GameRun();     //게임 진행중

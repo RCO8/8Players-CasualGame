@@ -24,8 +24,8 @@ void Player::SetPlayerSprite(SDL_Renderer *getRend, const char* filename)
 {
 	general = new Sprite(getRend, filename);
 	SetFrameClip();
-	general->SetSpriteClip(frames[0]);
-	general->SetColorHide(0, 255, 0);
+	general->SetSpriteClip(frames[1]);
+	general->SetColorHide(0, 255, 33);
 }
 
 void Player::CheckMove(int x, int y)	//입력판정에 따라 이동 조치
@@ -89,5 +89,7 @@ void Player::CheckLife()
 
 void Player::SetFrameClip()
 {	//프레임 인덱스별로 사각형 클립 지정
-	frames[0] = { 0,0,16,24 };
+	frames[0] = { 0,1,15,22 };
+	frames[1] = { 17,1,15,22 };
+	frames[2] = { 33,1,15,22 };
 }

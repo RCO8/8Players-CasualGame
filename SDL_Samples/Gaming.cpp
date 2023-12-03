@@ -24,10 +24,11 @@ bool Gaming::GameInit()
     //Resouce Setting
     SDL_Color bgImgColor = { 255,255,255 };
     players[0] = new Player(0, 0);
-    SDL_Color hideSprite = { 0,255,0 };
-    playerSprite[0] = new Sprite(renderer, "Bomberman.png");
-    playerSprite[0]->SetSpriteClip(0, 1, 15, 22);
-    playerSprite[0]->SetColorHide(hideSprite);
+    players[0]->SetPlayerSprite(renderer, "Bomberman1.png");
+
+    players[1] = new Player(360, 0);
+    players[1]->SetPlayerSprite(renderer, "Bomberman2.png");
+
     return true;
 }
 
@@ -60,50 +61,42 @@ void Gaming::CheckKeyPress()
         case SDL_KEYDOWN:
             switch (event.key.keysym.scancode)
             {
-            case SDL_SCANCODE_UP:       //SDL_Log("Up");
-                if (0 < players[0]->GetPosition(false))
-                    players[0]->CheckMove(0, -2);
-                break;
-            case SDL_SCANCODE_DOWN:     //SDL_Log("Down");
-                if(windowHeight - playerSprite[0]->GetClipHeight() > players[0]->GetPosition(false))
-                    players[0]->CheckMove(0, 2);
-                break;
-            case SDL_SCANCODE_LEFT:     //SDL_Log("Left");
-                if(0 < players[0]->GetPosition(true))
-                    players[0]->CheckMove(-2, 0);
-                break;
-            case SDL_SCANCODE_RIGHT:    //SDL_Log("Right");
-                if(windowWidth - playerSprite[0]->GetClipWidth() > players[0]->GetPosition(true))
-                    players[0]->CheckMove(2, 0);
-                break;
-            case SDL_SCANCODE_RETURN:   //SDL_Log("Enter");
-                break;
-            case SDL_SCANCODE_SPACE:    //SDL_Log("Space");
-                break;
-            case SDL_SCANCODE_LSHIFT:   //SDL_Log("Shift");
-                break;
-            case SDL_SCANCODE_LCTRL:    //SDL_Log("Ctrl");
-                break;
-            case SDL_SCANCODE_LALT:     //SDL_Log("Alt");
-                break;
-            case SDL_SCANCODE_F1:       //SDL_Log("F1");
-                break;
-            case SDL_SCANCODE_W:        //SDL_Log("W");
-                break;
-            case SDL_SCANCODE_S:        //SDL_Log("S");
-                break;
-            case SDL_SCANCODE_A:        //SDL_Log("A");
-                break;
-            case SDL_SCANCODE_D:        //SDL_Log("D");
-                break;
-            case SDL_SCANCODE_ESCAPE:   //SDL_Log("Escape");
+            case SDL_SCANCODE_DOWN:
+                //playerSprite[0]->SetSpriteClip(17, 1, 15, 22);
                 break;
             }
+        case SDL_KEYMAPCHANGED:
+            switch (event.key.keysym.scancode)
+            {
+            case SDL_SCANCODE_W:       //SDL_Log("Up");
+                if (0 < players[0]->GetPosition(false))
+                    inputVertical = -1;
+                break;
+            case SDL_SCANCODE_S:
+                //if (windowHeight - playerSprite[0]->GetClipHeight() > players[0]->GetPosition(false))
+                    inputVertical = 1;
+                break;
+            case SDL_SCANCODE_A:     //SDL_Log("Left");
+                if (0 < players[0]->GetPosition(true))
+                    inputHorizon = -1;
+                break;
+            case SDL_SCANCODE_D:    //SDL_Log("Right");
+                //if (windowWidth - playerSprite[0]->GetClipWidth() > players[0]->GetPosition(true))
+                    inputHorizon = 1;
+                break;
+            default:
+                break;
+            }
+            break;
         case SDL_KEYUP:
             switch (event.key.keysym.scancode)  //Same to SDL_KEYDOWN
             {
-            case SDL_SCANCODE_LEFT:     
-            case SDL_SCANCODE_RIGHT:
+            case SDL_SCANCODE_W:
+            case SDL_SCANCODE_S:
+                inputVertical = 0;
+            case SDL_SCANCODE_A:
+            case SDL_SCANCODE_D:
+                inputHorizon = 0;
                 break;
             }
             break;
@@ -153,6 +146,15 @@ void Gaming::UpdateData()
     //게임 내 변형된 데이터를 여기에 갱신
     //만약에 이벤트에 적용을 하지 않는다면
     //mTimer.StartCount();
+    if(inputVertical < 0)
+        players[0]->CheckMove(0, -2);
+    else if(inputVertical > 0)
+        players[0]->CheckMove(0, 2);
+    else if(inputHorizon < 0)
+        players[0]->CheckMove(-2, 0);
+    else if(inputHorizon > 0)
+        players[0]->CheckMove(2, 0);
+
     SDL_Delay(100);
 }
 void Gaming::DrawScreen()   //Drawing Sprite or UI in this Screen
@@ -161,7 +163,8 @@ void Gaming::DrawScreen()   //Drawing Sprite or UI in this Screen
     SDL_RenderClear(renderer);  //Screen Clear   //Fill Color in Screen
     
     //Draw Image
-    playerSprite[0]->Drawing(players[0]->GetPosition(true), players[0]->GetPosition(false), 0);
+    players[0]->DrawPlayer();
+    players[1]->DrawPlayer();
     //Draw UI
 
     SDL_RenderPresent(renderer);    //Redraw at Screen
