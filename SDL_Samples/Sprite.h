@@ -20,10 +20,12 @@ public:
 	Sprite(SDL_Renderer* getRenderer, const char* fileName);
 	~Sprite();
 
+	void SetSpriteClip(SDL_Rect clip);	//이미지 파일의 일부를 나타낼 설정
 	void SetSpriteClip(int x, int y, int w, int h);	//이미지 파일의 일부를 나타낼 설정
 	void SetSpriteScale(int w, int h);				//크기 설정
 	void SetRotatePoint(int x, int y);				//중심점 지정
-	void SetColorHide(SDL_Color setColor);			//투명색 설정
+	void SetColorHide(SDL_Color setColor);			//투명색 설정 
+	void SetColorHide(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xff);			//투명색 설정 
 	void Drawing(int x, int y, int dir, int mirror = 0);	//화면에 그리기
 	void DrawFill() const;	//전체화면으로 채우기
 

@@ -15,7 +15,20 @@ Player::Player(int getX, int getY) : StartX(getX), StartY(getY)
 	//스프라이트 설정
 }
 
-void Player::CheckMove(int x, int y)
+Player::~Player()
+{
+	general->~Sprite();
+}
+
+void Player::SetPlayerSprite(SDL_Renderer *getRend, const char* filename)
+{
+	general = new Sprite(getRend, filename);
+	SetFrameClip();
+	general->SetSpriteClip(frames[0]);
+	general->SetColorHide(0, 255, 0);
+}
+
+void Player::CheckMove(int x, int y)	//입력판정에 따라 이동 조치
 {
 	this->x += speed * x;
 	this->y += speed * y;
@@ -32,14 +45,6 @@ void Player::Damaged(int h)
 		this->y = StartY;
 	}
 	CheckLife();
-}
-
-void Player::CheckLife()
-{
-	if (life == 0)
-	{
-		SDL_Log("Game Over");
-	}
 }
 
 void Player::PowerUp(int opt)
@@ -64,4 +69,25 @@ void Player::PowerUp(int opt)
 void Player::HasItem()
 {
 	//아이템을 사용 
+}
+
+void Player::DrawPlayer()
+{
+	if (general)
+	{
+		general->Drawing(x, y, 0);
+	}
+}
+
+void Player::CheckLife()
+{
+	if (life == 0)
+	{
+		SDL_Log("Game Over");
+	}
+}
+
+void Player::SetFrameClip()
+{	//프레임 인덱스별로 사각형 클립 지정
+	frames[0] = { 0,0,16,24 };
 }
