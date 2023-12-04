@@ -12,7 +12,11 @@ Player::Player(int getX, int getY) : StartX(getX), StartY(getY)
 	power = 1;
 	item = 1;
 
+	moveX = 0;
+	moveY = 0;
+
 	//스프라이트 설정
+	nowFrame = 1;
 }
 
 Player::~Player()
@@ -28,10 +32,16 @@ void Player::SetPlayerSprite(SDL_Renderer *getRend, const char* filename)
 	general->SetColorHide(0, 255, 33);
 }
 
-void Player::CheckMove(int x, int y)	//입력판정에 따라 이동 조치
+void Player::CheckMove()	//입력판정에 따라 이동 조치
 {
-	this->x += speed * x;
-	this->y += speed * y;
+	if (moveX > 0 && this->x <= 720 - general->GetClipWidth())
+		this->x += speed;
+	else if (moveX < 0 && this->x >= 0)
+		this->x -= speed;
+	else if (moveY > 0 && this->y <= 640 - general->GetClipHeight())
+		this->y += speed;
+	else if (moveY < 0 && this->y >= 0)
+		this->y -= speed;
 }
 
 void Player::Damaged(int h)
@@ -75,6 +85,7 @@ void Player::DrawPlayer()
 {
 	if (general)
 	{
+		general->SetSpriteClip(frames[nowFrame]);
 		general->Drawing(x, y, 0);
 	}
 }
