@@ -3,7 +3,9 @@
 Joystick::Joystick()
 {
 	for (int i = 0; i < SDL_NumJoysticks(); i++)
+	{
 		myJoystick = SDL_JoystickOpen(i);
+	}
 
 	if (myJoystick == NULL)
 	{
@@ -17,16 +19,16 @@ Joystick::~Joystick()
 	SDL_JoystickClose(myJoystick);
 }
 
-void Joystick::CheckJoystickEvent(SDL_Event event, Player &getPlayers)
+void Joystick::CheckJoystickEvent(SDL_Event event)
 {
-		switch (event.type)
-		{
+	switch (event.type)
+	{
 		case SDL_JOYBUTTONDOWN:
 			for (int i = 0; i < SDL_NumJoysticks(); i++)
 				if (i == event.jbutton.which)
 					switch (event.jbutton.button)
 					{
-					case 0:		//SDL_Log("Play %d Button 0", i + 1);
+					case 0:		SDL_Log("Play %d Button 0", i + 1);
 						break;
 					case 1:		//SDL_Log("Play %d Button 1", i + 1);
 						break;
@@ -51,27 +53,32 @@ void Joystick::CheckJoystickEvent(SDL_Event event, Player &getPlayers)
 					case 11:	//SDL_Log("Play %d Button 11", i + 1);
 						break;
 					}
-			break;
 		case SDL_JOYAXISMOTION:
 			for (int i = 0; i < SDL_NumJoysticks(); i++)
 				if (i == event.jbutton.which)
 					switch (event.jaxis.axis)
 					{
 					case 0:	//Horizontal
+						GetJoyAxisX[i] = 0;
 						switch (event.jaxis.value)
 						{
-						case SDL_JOYSTICK_AXIS_MIN:	//SDL_Log("Play %d Joystick Left", i + 1);
+						case SDL_JOYSTICK_AXIS_MIN:
+							GetJoyAxisX[i] = -1;
 							break;
-						case SDL_JOYSTICK_AXIS_MAX:	//SDL_Log("Play %d Joystick Right", i + 1);
+						case SDL_JOYSTICK_AXIS_MAX:
+							GetJoyAxisX[i] = 1;
 							break;
 						}
 						break;
 					case 1:	//Vertical
+						GetJoyAxisY[i] = 0;
 						switch (event.jaxis.value)
 						{
-						case SDL_JOYSTICK_AXIS_MIN:	//SDL_Log("Play %d Joystick Up", i + 1);
+						case SDL_JOYSTICK_AXIS_MIN:
+							GetJoyAxisY[i] = -1;
 							break;
-						case SDL_JOYSTICK_AXIS_MAX:	//SDL_Log("Play %d Joystick Down", i + 1);
+						case SDL_JOYSTICK_AXIS_MAX:
+							GetJoyAxisY[i] = 1;
 							break;
 						}
 						break;
@@ -99,18 +106,6 @@ void Joystick::CheckJoystickEvent(SDL_Event event, Player &getPlayers)
 					case SDL_HAT_RIGHTUP:	//SDL_Log("Play %d Hat ↗", i + 1);
 						break;
 					}
-			break;
-		case SDL_JOYDEVICEADDED:
-			//조이스틱이 추가 연결될 시 인덱스 증가
-			//maxJoystickIndex보다 초과시 연결 거부
-			myJoystick = SDL_JoystickOpen(SDL_NumJoysticks()-1);
-			SDL_Log("%d", SDL_NumJoysticks());
-		case SDL_JOYDEVICEREMOVED:
-			//인덱스 감소 만약에 중간값이라면 앞으로 당기도록
-			//그리고 인덱스가 하나라면 그대로 소멸자 호출
-			SDL_Log("%d", SDL_NumJoysticks());
-			if (SDL_NumJoysticks() == 1)
-				this->~Joystick();
 			break;
 		//Extention Device
 		case SDL_JOYBATTERYUPDATED:	//Checking Battery If Device has Wiress Connect

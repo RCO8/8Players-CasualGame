@@ -21,6 +21,8 @@ bool Gaming::GameInit()
         return false;
     }
 
+    playerContoll = new Joystick();
+
     //Resouce Setting
     SDL_Color bgImgColor = { 255,255,255 };
     players[0] = new Player(0, 0);
@@ -36,16 +38,16 @@ bool Gaming::GameInit()
     players[3]->SetPlayerSprite(renderer, "Bomberman4.png");
 
     players[4] = new Player(705, 320);
-    players[4]->SetPlayerSprite(renderer, "Bomberman4.png");
+    players[4]->SetPlayerSprite(renderer, "Bomberman5.png");
 
-    players[5] = new Player(0, 618);
-    players[5]->SetPlayerSprite(renderer, "Bomberman4.png");
+    players[5] = new Player(0, 615);
+    players[5]->SetPlayerSprite(renderer, "Bomberman5.png");
 
-    players[6] = new Player(360, 618);
-    players[6]->SetPlayerSprite(renderer, "Bomberman4.png");
+    players[6] = new Player(360, 615);
+    players[6]->SetPlayerSprite(renderer, "Bomberman5.png");
 
-    players[7] = new Player(705, 618);
-    players[7]->SetPlayerSprite(renderer, "Bomberman4.png");
+    players[7] = new Player(705, 615);
+    players[7]->SetPlayerSprite(renderer, "Bomberman5.png");
 
     return true;
 }
@@ -56,7 +58,7 @@ void Gaming::CheckKeyPress()
     {
         switch (event.type)
         {
-        case SDL_QUIT: quit = true; break;
+        case SDL_QUIT: quit = true; return;
         case SDL_WINDOWEVENT:
             switch (event.window.event)
             {
@@ -72,33 +74,31 @@ void Gaming::CheckKeyPress()
                 break;
             case SDL_WINDOWEVENT_FOCUS_LOST:    //SDL_Log("Window Disable");
                 break;
-            case SDL_WINDOWEVENT_CLOSE: quit = true; break;
+            case SDL_WINDOWEVENT_CLOSE: quit = true; return;
             }
 
             //Keyboard Check
         case SDL_KEYDOWN:
             switch (event.key.keysym.scancode)
             {
-            case SDL_SCANCODE_DOWN:
-                //playerSprite[0]->SetSpriteClip(17, 1, 15, 22);
+            case SDL_SCANCODE_ESCAPE:
+                quit = true;
                 break;
             }
         case SDL_KEYMAPCHANGED:
             switch (event.key.keysym.scancode)
             {
-            case SDL_SCANCODE_W:       //SDL_Log("Up");
+            case SDL_SCANCODE_W:
                 players[0]->InputY(-1);
                 break;
             case SDL_SCANCODE_S:
                 players[0]->InputY(1);
                 break;
-            case SDL_SCANCODE_A:     //SDL_Log("Left");
+            case SDL_SCANCODE_A:     
                 players[0]->InputX(-1);
                 break;
-            case SDL_SCANCODE_D:    //SDL_Log("Right");
+            case SDL_SCANCODE_D:
                 players[0]->InputX(1);
-                break;
-            default:
                 break;
             }
             break;
@@ -152,17 +152,17 @@ void Gaming::CheckKeyPress()
         }
 
         //추가적인 입력 디바이스가 있다면 여기로 메서드 호출
-        playerContoll->CheckJoystickEvent(event, *players[0]);
+        playerContoll->CheckJoystickEvent(event);
     }
 }
 void Gaming::UpdateData()
 {
     //게임 내 변형된 데이터를 여기에 갱신
     //만약에 이벤트에 적용을 하지 않는다면
-    //mTimer.StartCount();
+    players[0]->InputX(playerContoll->GetJoyAxisX[0]);
+    players[0]->InputY(playerContoll->GetJoyAxisY[0]);
     players[0]->CheckMove();
-
-    SDL_Delay(50);
+    players[1]->CheckMove();
 }
 void Gaming::DrawScreen()   //Drawing Sprite or UI in this Screen
 {

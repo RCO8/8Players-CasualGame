@@ -42,6 +42,7 @@ void Player::CheckMove()	//입력판정에 따라 이동 조치
 		this->y += speed;
 	else if (moveY < 0 && this->y >= 0)
 		this->y -= speed;
+	SDL_Delay(30);
 }
 
 void Player::Damaged(int h)

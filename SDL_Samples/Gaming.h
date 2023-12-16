@@ -1,9 +1,6 @@
 #pragma once
 #include <SDL.h>
 #include "Sprite.h"
-#include "Timer.h"
-#include "UI.h"
-#include "Sound.h"
 #include "Joystick.h"
 #include "Player.h"
 

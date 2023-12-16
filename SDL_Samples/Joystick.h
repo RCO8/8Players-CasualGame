@@ -17,7 +17,9 @@ private:
 public:
 	Joystick();
 	~Joystick();
-	void CheckJoystickEvent(SDL_Event event, Player &getPlayers);
+	void CheckJoystickEvent(SDL_Event event);
+	int GetJoyAxisX[8];
+	int GetJoyAxisY[8];
 };
 
 //Console ver
